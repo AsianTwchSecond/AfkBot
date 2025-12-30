@@ -1,44 +1,40 @@
-const mineflayer = require('mineflayer');
-const http = require('http');
+const mineflayer = require("mineflayer")
+
+const bot = mineflayer.createBot({
+  host: "bingungsmp.top",
+  username: "AltNiXac",
+  version: false
+})
 
 function startBot() {
-  const bot = mineflayer.createBot({
-    host: 'bingungsmp.top',
-    port: 25565,
-    username: 'AltNiXac',
-    version: false
-  });
+  console.log("Starting bot...")
 
-  console.log('Bot starting');
-
-  bot.on('spawn', () => {
-    console.log('Spawned');
+  bot.once("spawn", () => {
+    console.log("Bot spawned")
 
     setTimeout(() => {
-      bot.chat('/login kurtalle');
+      bot.chat("/login kurtalle")
+    }, 3000)
 
-      setTimeout(() => {
-        bot.chat('/server ecocpvp');
-      }, 3000);
+    setTimeout(() => {
+      bot.chat("/server ecocpvp")
+    }, 6000)
 
-    }, 1000);
-
+    // Auto jump every 5 seconds
     setInterval(() => {
-      bot.setControlState('jump', true);
-      setTimeout(() => bot.setControlState('jump', false), 300);
-    }, 5000);
-  });
+      bot.setControlState("jump", true)
+      setTimeout(() => {
+        bot.setControlState("jump", false)
+      }, 300)
+    }, 5000)
+  })
 
-  bot.on('end', () => {
-    console.log('Disconnected, restarting...');
-    setTimeout(startBot, 5000);
-  });
+  bot.on("end", () => {
+    console.log("Bot disconnected, restarting in 5s")
+    setTimeout(startBot, 5000)
+  })
+
+  bot.on("error", err => console.log("Error:", err))
 }
 
-// HTTP server (IMPORTANT)
-http.createServer((req, res) => {
-  res.writeHead(200);
-  res.end('AFK bot alive');
-}).listen(process.env.PORT || 3000);
-
-startBot();
+startBot()
